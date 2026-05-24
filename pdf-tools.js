@@ -581,6 +581,7 @@ async function wordToPdf(btn, files) {
     // The container width in px we render into — matches A4 at ~96 DPI
     const containerPx = 794;
 
+    let renderMethod = 'none';
     for (let fi = 0; fi < files.length; fi++) {
       if (fi > 0) doc.addPage();
       updateProgress(btn, 5 + (fi / files.length) * 80, `Converting ${files[fi].name}…`);
@@ -598,8 +599,6 @@ async function wordToPdf(btn, files) {
         overflow: hidden;
       `;
       document.body.appendChild(container);
-
-      let renderMethod = 'none';
 
       // Attempt 1: docx-preview (high fidelity — tables, images, styles, fonts)
       if (typeof docx !== 'undefined' && typeof docx.renderAsync === 'function') {
