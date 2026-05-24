@@ -191,7 +191,7 @@ function triggerDownload() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
   closeModal();
   showToast('✅ Download started!', 'success');
 }
