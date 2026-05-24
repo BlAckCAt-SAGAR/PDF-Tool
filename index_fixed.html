@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Studio — All-in-One PDF Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Background blobs -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-brand" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z" />
+        </svg>
+      </div>
+      PDF Studio
+    </a>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('convert', this)">⟳ Convert</button>
+      <button class="nav-tab" onclick="switchTab('merge', this)">⊕ Merge</button>
+      <button class="nav-tab" onclick="switchTab('compress', this)">⊘ Compress</button>
+      <button class="nav-tab" onclick="switchTab('split', this)">✂ Split</button>
+      <button class="nav-tab" onclick="switchTab('edit', this)">✦ Edit</button>
+      <button class="nav-tab" onclick="switchTab('secure', this)">🔒 Secure</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span>All PDF tools in one place</div>
+    <h1>Your files, <em>beautifully</em><br>handled</h1>
+    <p>Convert, merge, and compress PDFs with precision. No cloud uploads — everything stays in your browser.</p>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ─── CONVERT SECTION ─── -->
+    <section class="section active" id="section-convert">
+      <div class="section-header">
+        <div class="section-icon convert">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 3 21 3 21 8" />
+            <line x1="4" y1="20" x2="21" y2="3" />
+            <polyline points="21 16 21 21 16 21" />
+            <line x1="15" y1="15" x2="21" y2="21" />
+          </svg>
+        </div>
+        <div>
+          <h2>Convert to PDF</h2>
+          <p>Transform any file type into a perfect PDF document</p>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">12+</div>
+          <div class="stat-lbl">Supported formats</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-num">∞</div>
+          <div class="stat-lbl">No file size limit</div>
+        </div>
+        <div class="stat-card light">
+          <div class="stat-num">100%</div>
+          <div class="stat-lbl">Private & secure</div>
+        </div>
+      </div>
+
+      <div class="tool-grid">
+
+        <!-- Word to PDF -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">📝</div>
+            <div>
+              <div class="card-title">Word to PDF</div>
+              <div class="card-desc">DOC & DOCX files converted with perfect formatting</div>
+            </div>
+          </div>
+          <div class="drop-zone" id="dz-word" data-accept=".doc,.docx">
+            <input type="file" accept=".doc,.docx" multiple onchange="handleFiles(this, 'word')">
+            <div class="drop-icon">📄</div>
+            <div class="drop-text"><strong>Drop files here</strong> or click to browse<br>.doc, .docx</div>
+          </div>
+          <div class="file-list" id="fl-word"></div>
+          <button class="btn" onclick="simulateConvert(this, 'word-to-pdf')"><span class="btn-text">✦ Convert to
+              PDF</span></button>
+          <div class="progress-wrap" id="pw-word">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-word"></div>
+            </div>
+            <div class="progress-label" id="pl-word">Converting…</div>
+          </div>
+        </div>
+
+        <!-- Excel to PDF -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">📊</div>
+            <div>
+              <div class="card-title">Excel to PDF</div>
+              <div class="card-desc">Spreadsheets converted preserving all data & charts</div>
+            </div>
+          </div>
+          <div class="drop-zone" id="dz-excel">
+            <input type="file" accept=".xls,.xlsx,.csv" multiple onchange="handleFiles(this, 'excel')">
+            <div class="drop-icon">📈</div>
+            <div class="drop-text"><strong>Drop files here</strong> or click to browse<br>.xls, .xlsx, .csv</div>
+          </div>
+          <div class="file-list" id="fl-excel"></div>
+          <div class="convert-opts" id="co-excel">
+            <div class="opt-chip selected" onclick="selectOpt(this)">Fit to page</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Full size</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Grid view</div>
+          </div>
+          <button class="btn" onclick="simulateConvert(this, 'excel-to-pdf')"><span class="btn-text">✦ Convert to
+              PDF</span></button>
+          <div class="progress-wrap" id="pw-excel">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-excel"></div>
+            </div>
+            <div class="progress-label" id="pl-excel">Converting…</div>
+          </div>
+        </div>
+
+        <!-- PowerPoint to PDF -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon pink">📑</div>
+            <div>
+              <div class="card-title">PowerPoint to PDF</div>
+              <div class="card-desc">Slides converted with animations & transitions</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".ppt,.pptx" multiple onchange="handleFiles(this, 'ppt')">
+            <div class="drop-icon">🎞️</div>
+            <div class="drop-text"><strong>Drop files here</strong> or click to browse<br>.ppt, .pptx</div>
+          </div>
+          <div class="file-list" id="fl-ppt"></div>
+          <div class="convert-opts">
+            <div class="opt-chip selected" onclick="selectOpt(this)">1 slide/page</div>
+            <div class="opt-chip" onclick="selectOpt(this)">2 slides/page</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Notes view</div>
+          </div>
+          <button class="btn" onclick="simulateConvert(this, 'ppt-to-pdf')"><span class="btn-text">✦ Convert to
+              PDF</span></button>
+          <div class="progress-wrap" id="pw-ppt">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-ppt"></div>
+            </div>
+            <div class="progress-label" id="pl-ppt">Converting…</div>
+          </div>
+        </div>
+
+        <!-- Image to PDF -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">🖼️</div>
+            <div>
+              <div class="card-title">Image to PDF</div>
+              <div class="card-desc">JPG, PNG, WEBP, HEIC — all image types supported</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept="image/*" multiple onchange="handleFiles(this, 'img')">
+            <div class="drop-icon">🏞️</div>
+            <div class="drop-text"><strong>Drop images here</strong> or click to browse<br>JPG, PNG, WEBP, HEIC, GIF
+            </div>
+          </div>
+          <div class="file-list" id="fl-img"></div>
+          <div class="convert-opts">
+            <div class="opt-chip selected" onclick="selectOpt(this)">Auto-size</div>
+            <div class="opt-chip" onclick="selectOpt(this)">A4</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Letter</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Original</div>
+          </div>
+          <button class="btn" onclick="simulateConvert(this, 'img-to-pdf')"><span class="btn-text">✦ Convert to
+              PDF</span></button>
+          <div class="progress-wrap" id="pw-img">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-img"></div>
+            </div>
+            <div class="progress-label" id="pl-img">Converting…</div>
+          </div>
+        </div>
+
+        <!-- HTML to PDF -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon purple">🌐</div>
+            <div>
+              <div class="card-title">HTML / URL to PDF</div>
+              <div class="card-desc">Convert webpages or local HTML files to PDF</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".html,.htm" multiple onchange="handleFiles(this, 'html')">
+            <div class="drop-icon">💻</div>
+            <div class="drop-text"><strong>Drop HTML files</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-html"></div>
+          <div style="position:relative;z-index:1;margin-top:10px;">
+            <div class="size-input-wrap">
+              <span style="font-size:0.82rem;color:var(--text-muted)">URL:</span>
+              <input class="size-input" style="width:100%;color:var(--text)" type="url"
+                placeholder="https://example.com">
+            </div>
+          </div>
+          <button class="btn" onclick="simulateConvert(this, 'html-to-pdf')"><span class="btn-text">✦ Convert to
+              PDF</span></button>
+          <div class="progress-wrap" id="pw-html">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-html"></div>
+            </div>
+            <div class="progress-label" id="pl-html">Converting…</div>
+          </div>
+        </div>
+
+        <!-- Text to PDF -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">✏️</div>
+            <div>
+              <div class="card-title">Text / Markdown to PDF</div>
+              <div class="card-desc">Plain text, .md, and .rtf with custom typography</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".txt,.md,.rtf" multiple onchange="handleFiles(this, 'txt')">
+            <div class="drop-icon">📃</div>
+            <div class="drop-text"><strong>Drop text files</strong> or click to browse<br>.txt, .md, .rtf</div>
+          </div>
+          <div class="file-list" id="fl-txt"></div>
+          <div class="convert-opts">
+            <div class="opt-chip selected" onclick="selectOpt(this)">A4</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Letter</div>
+            <div class="opt-chip" onclick="selectOpt(this)">Legal</div>
+          </div>
+          <button class="btn" onclick="simulateConvert(this, 'txt-to-pdf')"><span class="btn-text">✦ Convert to
+              PDF</span></button>
+          <div class="progress-wrap" id="pw-txt">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-txt"></div>
+            </div>
+            <div class="progress-label" id="pl-txt">Converting…</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- FROM PDF section -->
+      <div class="section-header">
+        <div class="section-icon" style="background:linear-gradient(135deg,#8785A2,#a5a3c0)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </div>
+        <div>
+          <h2>Convert from PDF</h2>
+          <p>Extract and export PDF content to other formats</p>
+        </div>
+      </div>
+
+      <div class="tool-grid">
+
+        <!-- PDF to Word -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">📝</div>
+            <div>
+              <div class="card-title">PDF to Word</div>
+              <div class="card-desc">Editable .docx with layout preserved</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'p2w')">
+            <div class="drop-icon">📄</div>
+            <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-p2w"></div>
+          <button class="btn" onclick="simulateConvert(this, 'pdf-to-word')"><span class="btn-text">✦ Export as
+              Word</span></button>
+          <div class="progress-wrap" id="pw-p2w">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-p2w"></div>
+            </div>
+            <div class="progress-label" id="pl-p2w">Extracting…</div>
+          </div>
+        </div>
+
+        <!-- PDF to Excel -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">📊</div>
+            <div>
+              <div class="card-title">PDF to Excel</div>
+              <div class="card-desc">Tables extracted as clean spreadsheets</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'p2e')">
+            <div class="drop-icon">📈</div>
+            <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-p2e"></div>
+          <button class="btn" onclick="simulateConvert(this, 'pdf-to-excel')"><span class="btn-text">✦ Export as
+              Excel</span></button>
+          <div class="progress-wrap" id="pw-p2e">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-p2e"></div>
+            </div>
+            <div class="progress-label" id="pl-p2e">Extracting…</div>
+          </div>
+        </div>
+
+        <!-- PDF to Image -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon pink">🖼️</div>
+            <div>
+              <div class="card-title">PDF to Images</div>
+              <div class="card-desc">Each page exported as high-res JPG or PNG</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'p2i')">
+            <div class="drop-icon">🏞️</div>
+            <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-p2i"></div>
+          <div class="convert-opts">
+            <div class="opt-chip selected" onclick="selectOpt(this)">JPG</div>
+            <div class="opt-chip" onclick="selectOpt(this)">PNG</div>
+            <div class="opt-chip" onclick="selectOpt(this)">WEBP</div>
+          </div>
+          <button class="btn" onclick="simulateConvert(this, 'pdf-to-img')"><span class="btn-text">✦ Export as
+              Images</span></button>
+          <div class="progress-wrap" id="pw-p2i">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-p2i"></div>
+            </div>
+            <div class="progress-label" id="pl-p2i">Rendering pages…</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── MERGE SECTION ─── -->
+    <section class="section" id="section-merge">
+      <div class="section-header">
+        <div class="section-icon merge">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <polyline points="19 12 12 19 5 12" />
+          </svg>
+        </div>
+        <div>
+          <h2>Merge PDFs</h2>
+          <p>Combine multiple PDF files in any order you choose</p>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">∞</div>
+          <div class="stat-lbl">Files at once</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-num">↕</div>
+          <div class="stat-lbl">Drag to reorder</div>
+        </div>
+        <div class="stat-card light">
+          <div class="stat-num">0s</div>
+          <div class="stat-lbl">Upload time</div>
+        </div>
+      </div>
+
+      <div class="tool-card" style="max-width:680px;margin:0 auto;">
+        <div class="card-header">
+          <div class="card-icon purple">🔀</div>
+          <div>
+            <div class="card-title">Drag & Drop to Reorder</div>
+            <div class="card-desc">Upload PDFs, then drag them into your preferred merge order</div>
+          </div>
+        </div>
+
+        <div class="drop-zone" id="dz-merge">
+          <input type="file" accept=".pdf" multiple onchange="handleMergeFiles(this)">
+          <div class="drop-icon">➕</div>
+          <div class="drop-text"><strong>Add PDF files</strong> or click to browse<br>You can add more files after
+            uploading</div>
+        </div>
+
+        <div class="merge-list-wrap">
+          <div class="merge-list" id="merge-list">
+            <!-- items inserted here -->
+          </div>
+          <div class="empty-state" id="merge-empty">
+            <div class="empty-icon">📭</div>
+            <p>No files yet — add PDFs above to get started</p>
+          </div>
+        </div>
+
+        <div class="merge-hint" id="merge-hint" style="display:none">
+          ✦ Drag the <span>≡</span> handle to reorder · Files will merge in the order shown above
+        </div>
+
+        <button class="btn" id="merge-btn" onclick="simulateMerge(this)"><span class="btn-text">⊕ Merge All
+            PDFs</span></button>
+        <div class="progress-wrap" id="pw-merge">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-merge"></div>
+          </div>
+          <div class="progress-label" id="pl-merge">Merging documents…</div>
+        </div>
+
+        <div style="position:relative;z-index:1;margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="clearMergeList()"
+            style="flex:1;min-width:120px;padding:10px;background:var(--snow);border:1.5px solid rgba(135,133,162,0.2);border-radius:var(--radius-sm);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.84rem;color:var(--text-muted);transition:all 0.18s"
+            onmouseover="this.style.borderColor='var(--slate)'"
+            onmouseout="this.style.borderColor='rgba(135,133,162,0.2)'">🗑 Clear all</button>
+          <button onclick="reverseMergeOrder()"
+            style="flex:1;min-width:120px;padding:10px;background:var(--snow);border:1.5px solid rgba(135,133,162,0.2);border-radius:var(--radius-sm);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.84rem;color:var(--text-muted);transition:all 0.18s"
+            onmouseover="this.style.borderColor='var(--slate)'"
+            onmouseout="this.style.borderColor='rgba(135,133,162,0.2)'">↕ Reverse order</button>
+          <button onclick="sortMergeAlpha()"
+            style="flex:1;min-width:120px;padding:10px;background:var(--snow);border:1.5px solid rgba(135,133,162,0.2);border-radius:var(--radius-sm);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.84rem;color:var(--text-muted);transition:all 0.18s"
+            onmouseover="this.style.borderColor='var(--slate)'"
+            onmouseout="this.style.borderColor='rgba(135,133,162,0.2)'">🔤 Sort A–Z</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── COMPRESS SECTION ─── -->
+    <section class="section" id="section-compress">
+      <div class="section-header">
+        <div class="section-icon compress">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 14 10 14 10 20" />
+            <polyline points="20 10 14 10 14 4" />
+            <line x1="14" y1="10" x2="21" y2="3" />
+            <line x1="3" y1="21" x2="10" y2="14" />
+          </svg>
+        </div>
+        <div>
+          <h2>Compress PDF</h2>
+          <p>Shrink file sizes while preserving visual quality</p>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">90%</div>
+          <div class="stat-lbl">Max compression</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-num">⚙</div>
+          <div class="stat-lbl">Custom target size</div>
+        </div>
+        <div class="stat-card light">
+          <div class="stat-num">✓</div>
+          <div class="stat-lbl">Quality preserved</div>
+        </div>
+      </div>
+
+      <div class="tool-grid">
+
+        <!-- Quick Compress -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon red">⚡</div>
+            <div>
+              <div class="card-title">Quick Compress</div>
+              <div class="card-desc">One click for optimal size-quality balance</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'qc')">
+            <div class="drop-icon">📦</div>
+            <div class="drop-text"><strong>Drop PDFs here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-qc"></div>
+
+          <div class="compress-settings">
+            <div class="setting-row">
+              <span class="setting-label">Quality level</span>
+              <div class="quality-chips">
+                <div class="quality-chip" onclick="selectQuality(this)">Maximum</div>
+                <div class="quality-chip selected" onclick="selectQuality(this)">Balanced</div>
+                <div class="quality-chip" onclick="selectQuality(this)">Minimum</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn" onclick="simulateConvert(this, 'compress-quick')"><span class="btn-text">⊘ Compress
+              Now</span></button>
+          <div class="progress-wrap" id="pw-qc">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-qc"></div>
+            </div>
+            <div class="progress-label" id="pl-qc">Compressing…</div>
+          </div>
+        </div>
+
+        <!-- Target Size Compress -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon purple">🎯</div>
+            <div>
+              <div class="card-title">Target File Size</div>
+              <div class="card-desc">Compress to an exact file size you specify</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'tc')">
+            <div class="drop-icon">📐</div>
+            <div class="drop-text"><strong>Drop PDFs here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-tc"></div>
+
+          <div class="compress-settings">
+            <div class="setting-row">
+              <span class="setting-label">Target size</span>
+              <div class="size-input-wrap">
+                <input class="size-input" type="number" value="2" min="0.1" step="0.1" id="target-size-val"
+                  oninput="updateSizeEstimate()">
+                <div class="size-unit">
+                  <button class="unit-btn selected" id="unit-kb" onclick="setUnit('KB')">KB</button>
+                  <button class="unit-btn" id="unit-mb" onclick="setUnit('MB')">MB</button>
+                </div>
+              </div>
+            </div>
+            <div class="estimate-badge" id="size-estimate">
+              📉 Estimated reduction: ~<span id="est-val">50</span>%
+            </div>
+          </div>
+
+          <button class="btn" onclick="simulateConvert(this, 'compress-target')"><span class="btn-text">🎯 Compress to
+              Size</span></button>
+          <div class="progress-wrap" id="pw-tc">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-tc"></div>
+            </div>
+            <div class="progress-label" id="pl-tc">Targeting size…</div>
+          </div>
+        </div>
+
+        <!-- DPI / Resolution Compress -->
+        <div class="tool-card">
+          <div class="card-header">
+            <div class="card-icon pink">🔍</div>
+            <div>
+              <div class="card-title">Reduce Image DPI</div>
+              <div class="card-desc">Lower resolution for web, email, or print</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'dpi')">
+            <div class="drop-icon">🖨️</div>
+            <div class="drop-text"><strong>Drop PDFs here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-dpi"></div>
+
+          <div class="compress-settings">
+            <div class="setting-row">
+              <span class="setting-label">Output DPI</span>
+              <div class="range-wrap">
+                <input type="range" min="72" max="300" value="150" id="dpi-range"
+                  oninput="document.getElementById('dpi-val').textContent=this.value">
+                <span class="range-val" id="dpi-val">150</span>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Use case</span>
+              <div class="quality-chips">
+                <div class="quality-chip" onclick="setDpi(72, this)">Web (72)</div>
+                <div class="quality-chip selected" onclick="setDpi(150, this)">Email (150)</div>
+                <div class="quality-chip" onclick="setDpi(300, this)">Print (300)</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn" onclick="simulateConvert(this, 'compress-dpi')"><span class="btn-text">✦ Reduce
+              Resolution</span></button>
+          <div class="progress-wrap" id="pw-dpi">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-dpi"></div>
+            </div>
+            <div class="progress-label" id="pl-dpi">Processing images…</div>
+          </div>
+        </div>
+
+        <!-- Advanced Compress -->
+        <div class="tool-card" style="grid-column: 1 / -1; max-width: 680px;">
+          <div class="card-header">
+            <div class="card-icon purple">⚙️</div>
+            <div>
+              <div class="card-title">Advanced Compression</div>
+              <div class="card-desc">Fine-tune every compression parameter for total control</div>
+            </div>
+          </div>
+          <div class="drop-zone">
+            <input type="file" accept=".pdf" multiple onchange="handleFiles(this, 'adv')">
+            <div class="drop-icon">🗜️</div>
+            <div class="drop-text"><strong>Drop PDFs here</strong> or click to browse</div>
+          </div>
+          <div class="file-list" id="fl-adv"></div>
+
+          <div class="compress-settings">
+            <div class="setting-row">
+              <span class="setting-label">Image quality</span>
+              <div class="range-wrap">
+                <input type="range" min="10" max="100" value="75" id="iq-range"
+                  oninput="document.getElementById('iq-val').textContent=this.value+'%'">
+                <span class="range-val" id="iq-val">75%</span>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Max DPI</span>
+              <div class="range-wrap">
+                <input type="range" min="72" max="600" value="200" step="4" id="mdpi-range"
+                  oninput="document.getElementById('mdpi-val').textContent=this.value">
+                <span class="range-val" id="mdpi-val">200</span>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Options</span>
+              <div class="quality-chips">
+                <div class="quality-chip selected" onclick="toggleOpt(this)">Remove metadata</div>
+                <div class="quality-chip selected" onclick="toggleOpt(this)">Flatten layers</div>
+                <div class="quality-chip" onclick="toggleOpt(this)">Grayscale</div>
+                <div class="quality-chip" onclick="toggleOpt(this)">Remove fonts</div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <span class="setting-label">Target size</span>
+              <div class="size-input-wrap">
+                <input class="size-input" type="number" value="5" min="0.1" step="0.5" id="adv-size">
+                <div class="size-unit">
+                  <button class="unit-btn" id="adv-unit-kb" onclick="setAdvUnit('KB', this)">KB</button>
+                  <button class="unit-btn selected" id="adv-unit-mb" onclick="setAdvUnit('MB', this)">MB</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn" onclick="simulateConvert(this, 'compress-adv')"><span class="btn-text">⚙️ Advanced
+              Compress</span></button>
+          <div class="progress-wrap" id="pw-adv">
+            <div class="progress-bar-bg">
+              <div class="progress-bar" id="pb-adv"></div>
+            </div>
+            <div class="progress-label" id="pl-adv">Applying settings…</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+  <!-- ─── SPLIT SECTION ─── -->
+  <section class="section" id="section-split">
+    <div class="section-header">
+      <div class="section-icon split">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6" />
+          <line x1="8" y1="12" x2="21" y2="12" />
+          <line x1="8" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="3.01" y2="6" />
+          <line x1="3" y1="12" x2="3.01" y2="12" />
+          <line x1="3" y1="18" x2="3.01" y2="18" />
+        </svg>
+      </div>
+      <div>
+        <h2>Split PDF</h2>
+        <p>Divide PDFs by page range, file size, or extract individual pages</p>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">∞</div>
+        <div class="stat-lbl">Split points</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-num">✂</div>
+        <div class="stat-lbl">Custom ranges</div>
+      </div>
+      <div class="stat-card light">
+        <div class="stat-num">ZIP</div>
+        <div class="stat-lbl">Batch download</div>
+      </div>
+    </div>
+    <div class="tool-grid">
+
+      <!-- By Page Range -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon red">📑</div>
+          <div>
+            <div class="card-title">Split by Page Range</div>
+            <div class="card-desc">Extract specific page ranges into separate files</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'spr')">
+          <div class="drop-icon">📂</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-spr"></div>
+        <div class="page-range-wrap">
+          <input class="page-range-input" type="text" id="range-input" placeholder="e.g. 1-3, 5, 7-9, 12-end"
+            oninput="previewRanges(this.value)">
+          <div class="page-range-hint">Use <code>1-3</code> for ranges · <code>5</code> for single pages ·
+            <code>12-end</code> for the tail
+          </div>
+        </div>
+        <div class="split-preview" id="split-preview"></div>
+        <button class="btn" onclick="simulateConvert(this,'split-ranges')"><span class="btn-text">✂ Split by
+            Range</span></button>
+        <div class="progress-wrap" id="pw-spr">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-spr"></div>
+          </div>
+          <div class="progress-label" id="pl-spr">Splitting…</div>
+        </div>
+      </div>
+
+      <!-- Extract Every Page -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon purple">📄</div>
+          <div>
+            <div class="card-title">Extract Every Page</div>
+            <div class="card-desc">One PDF per page — downloaded as a ZIP archive</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'sep')">
+          <div class="drop-icon">📋</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-sep"></div>
+        <div class="convert-opts">
+          <div class="opt-chip selected" onclick="selectOpt(this)">As PDF files</div>
+          <div class="opt-chip" onclick="selectOpt(this)">As images</div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'extract-pages')"><span class="btn-text">✂ Extract All
+            Pages</span></button>
+        <div class="progress-wrap" id="pw-sep">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-sep"></div>
+          </div>
+          <div class="progress-label" id="pl-sep">Extracting pages…</div>
+        </div>
+      </div>
+
+      <!-- Split by File Size -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon pink">⚖️</div>
+          <div>
+            <div class="card-title">Split by File Size</div>
+            <div class="card-desc">Auto-split into chunks under a maximum size</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'sfs')">
+          <div class="drop-icon">⚖️</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-sfs"></div>
+        <div class="compress-settings">
+          <div class="setting-row">
+            <span class="setting-label">Max chunk size</span>
+            <div class="size-input-wrap">
+              <input class="size-input" type="number" value="5" min="1" step="1">
+              <div class="size-unit">
+                <button class="unit-btn"
+                  onclick="this.parentNode.querySelectorAll('.unit-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected')">KB</button>
+                <button class="unit-btn selected"
+                  onclick="this.parentNode.querySelectorAll('.unit-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected')">MB</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'split-size')"><span class="btn-text">✂ Split by
+            Size</span></button>
+        <div class="progress-wrap" id="pw-sfs">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-sfs"></div>
+          </div>
+          <div class="progress-label" id="pl-sfs">Calculating chunks…</div>
+        </div>
+      </div>
+
+      <!-- Remove Pages -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon red">🗑️</div>
+          <div>
+            <div class="card-title">Remove Pages</div>
+            <div class="card-desc">Delete specific pages and save the rest as a new PDF</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'rmp')">
+          <div class="drop-icon">📄</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-rmp"></div>
+        <div class="page-range-wrap">
+          <input class="page-range-input" type="text" placeholder="Pages to remove: 2, 5-7, 10">
+          <div class="page-range-hint">These pages will be <strong>deleted</strong>. All others are kept.</div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'remove-pages')"><span class="btn-text">🗑 Remove
+            Pages</span></button>
+        <div class="progress-wrap" id="pw-rmp">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-rmp"></div>
+          </div>
+          <div class="progress-label" id="pl-rmp">Removing pages…</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── EDIT SECTION ─── -->
+  <section class="section" id="section-edit">
+    <div class="section-header">
+      <div class="section-icon edit">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+        </svg>
+      </div>
+      <div>
+        <h2>Edit PDF</h2>
+        <p>Rotate, reorder pages, add watermarks and more</p>
+      </div>
+    </div>
+    <div class="tool-grid">
+
+      <!-- Rotate Pages -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon red">🔄</div>
+          <div>
+            <div class="card-title">Rotate Pages</div>
+            <div class="card-desc">Rotate all or specific pages to any angle</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'rot')">
+          <div class="drop-icon">🔄</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-rot"></div>
+        <div class="rotate-opts">
+          <div class="rotate-opt selected" onclick="selectRotate(this)"><span class="rot-icon">↺</span>90° Left</div>
+          <div class="rotate-opt" onclick="selectRotate(this)"><span class="rot-icon">↻</span>90° Right</div>
+          <div class="rotate-opt" onclick="selectRotate(this)"><span class="rot-icon">↕</span>180°</div>
+        </div>
+        <div class="convert-opts">
+          <div class="opt-chip selected" onclick="selectOpt(this)">All pages</div>
+          <div class="opt-chip" onclick="selectOpt(this)">Even pages</div>
+          <div class="opt-chip" onclick="selectOpt(this)">Odd pages</div>
+          <div class="opt-chip" onclick="selectOpt(this)">Custom range</div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'rotate-pages')"><span class="btn-text">🔄 Apply
+            Rotation</span></button>
+        <div class="progress-wrap" id="pw-rot">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-rot"></div>
+          </div>
+          <div class="progress-label" id="pl-rot">Rotating…</div>
+        </div>
+      </div>
+
+      <!-- Page Organizer -->
+      <div class="tool-card" style="grid-column: span 2;">
+        <div class="card-header">
+          <div class="card-icon purple">🗂️</div>
+          <div>
+            <div class="card-title">Page Organizer</div>
+            <div class="card-desc">Drag pages to reorder, click to select, rotate or delete individual pages</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="initPageOrganizer(this)">
+          <div class="drop-icon">📑</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> to load pages for editing</div>
+        </div>
+        <div class="page-org-grid" id="page-org-grid"></div>
+        <div class="org-toolbar">
+          <button class="org-btn" onclick="orgSelectAll()">☑ Select all</button>
+          <button class="org-btn" onclick="orgRotateSelected()">🔄 Rotate selected</button>
+          <button class="org-btn" onclick="orgDeleteSelected()">🗑 Delete selected</button>
+          <button class="org-btn" onclick="orgReverseAll()">↕ Reverse all</button>
+          <button class="org-btn" onclick="orgReset()">↺ Reset</button>
+        </div>
+        <button class="btn" style="margin-top:14px;position:relative;z-index:1"
+          onclick="simulateConvert(this,'page-organizer')"><span class="btn-text">✦ Save Organized PDF</span></button>
+        <div class="progress-wrap" id="pw-org">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-org"></div>
+          </div>
+          <div class="progress-label" id="pl-org">Saving…</div>
+        </div>
+      </div>
+
+      <!-- Watermark -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon pink">💧</div>
+          <div>
+            <div class="card-title">Add Watermark</div>
+            <div class="card-desc">Text watermark with full opacity and position control</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'wm')">
+          <div class="drop-icon">💧</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-wm"></div>
+        <input class="wm-text-input" type="text" id="wm-text" value="CONFIDENTIAL" placeholder="Watermark text…"
+          oninput="updateWatermark()">
+        <div
+          style="position:relative;z-index:1;margin-top:10px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:0.78rem;font-weight:600;color:var(--text-muted);margin-bottom:6px">Color</div>
+            <div class="color-swatch-row">
+              <div class="color-swatch selected" style="background:rgba(135,133,162,0.6)"
+                onclick="selectSwatch(this,'rgba(135,133,162,0.35)')"></div>
+              <div class="color-swatch" style="background:rgba(255,100,100,0.7)"
+                onclick="selectSwatch(this,'rgba(255,100,100,0.35)')"></div>
+              <div class="color-swatch" style="background:rgba(0,0,0,0.6)"
+                onclick="selectSwatch(this,'rgba(0,0,0,0.18)')"></div>
+              <div class="color-swatch" style="background:rgba(80,120,200,0.7)"
+                onclick="selectSwatch(this,'rgba(80,120,200,0.35)')"></div>
+              <div class="color-swatch" style="background:rgba(60,160,100,0.7)"
+                onclick="selectSwatch(this,'rgba(60,160,100,0.35)')"></div>
+            </div>
+            <div style="font-size:0.78rem;font-weight:600;color:var(--text-muted);margin-top:10px;margin-bottom:6px">
+              Position</div>
+            <div class="quality-chips">
+              <div class="quality-chip selected" onclick="selectQuality(this)">Diagonal</div>
+              <div class="quality-chip" onclick="selectQuality(this)">Center</div>
+              <div class="quality-chip" onclick="selectQuality(this)">Top</div>
+              <div class="quality-chip" onclick="selectQuality(this)">Bottom</div>
+            </div>
+          </div>
+          <div class="wm-preview">
+            <div class="wm-preview-lines">
+              <div class="wm-line"></div>
+              <div class="wm-line"></div>
+              <div class="wm-line"></div>
+              <div class="wm-line"></div>
+              <div class="wm-line"></div>
+              <div class="wm-line"></div>
+            </div>
+            <div class="wm-text-overlay"><span id="wm-preview-text">CONFIDENTIAL</span></div>
+          </div>
+        </div>
+        <div class="compress-settings">
+          <div class="setting-row">
+            <span class="setting-label">Opacity</span>
+            <div class="range-wrap">
+              <input type="range" min="5" max="80" value="30" id="wm-opacity"
+                oninput="document.getElementById('wm-opacity-val').textContent=this.value+'%';updateWatermarkOpacity(this.value)">
+              <span class="range-val" id="wm-opacity-val">30%</span>
+            </div>
+          </div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'add-watermark')"><span class="btn-text">💧 Apply
+            Watermark</span></button>
+        <div class="progress-wrap" id="pw-wm">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-wm"></div>
+          </div>
+          <div class="progress-label" id="pl-wm">Adding watermark…</div>
+        </div>
+      </div>
+
+      <!-- PDF/A -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon red">🗃️</div>
+          <div>
+            <div class="card-title">Convert to PDF/A</div>
+            <div class="card-desc">Create archival-grade PDFs for long-term storage</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'pdfa')">
+          <div class="drop-icon">🗃️</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-pdfa"></div>
+        <div class="convert-opts">
+          <div class="opt-chip selected" onclick="selectOpt(this)">PDF/A-1b</div>
+          <div class="opt-chip" onclick="selectOpt(this)">PDF/A-2b</div>
+          <div class="opt-chip" onclick="selectOpt(this)">PDF/A-3b</div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'pdf-to-pdfa')"><span class="btn-text">🗃️ Convert to
+            PDF/A</span></button>
+        <div class="progress-wrap" id="pw-pdfa">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-pdfa"></div>
+          </div>
+          <div class="progress-label" id="pl-pdfa">Converting…</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── SECURE SECTION ─── -->
+  <section class="section" id="section-secure">
+    <div class="section-header">
+      <div class="section-icon secure">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      </div>
+      <div>
+        <h2>Protect &amp; Secure</h2>
+        <p>Password protect, unlock, sign and redact your PDFs</p>
+      </div>
+    </div>
+    <div class="tool-grid">
+
+      <!-- Password Protect -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon purple">🔒</div>
+          <div>
+            <div class="card-title">Password Protect</div>
+            <div class="card-desc">Encrypt PDF with 256-bit AES password protection</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'pp')">
+          <div class="drop-icon">🔒</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-pp"></div>
+        <div style="position:relative;z-index:1;margin-top:10px;">
+          <div style="font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:4px">Open password</div>
+          <div class="pass-input-wrap">
+            <input class="pass-input" type="password" id="open-pass" placeholder="Password to open the PDF…"
+              oninput="checkStrength(this.value,'open')">
+            <button class="pass-toggle" onclick="togglePass('open-pass',this)">👁</button>
+          </div>
+          <div class="pass-strength" id="open-strength">
+            <div class="strength-bar" id="sb-open-0"></div>
+            <div class="strength-bar" id="sb-open-1"></div>
+            <div class="strength-bar" id="sb-open-2"></div>
+            <div class="strength-bar" id="sb-open-3"></div>
+          </div>
+          <div class="strength-label" id="open-strength-label">Enter a password</div>
+          <div style="font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-top:12px;margin-bottom:4px">
+            Permissions password <span style="font-weight:400;opacity:0.7">(optional)</span></div>
+          <div class="pass-input-wrap">
+            <input class="pass-input" type="password" placeholder="Restrict editing/printing…">
+            <button class="pass-toggle">👁</button>
+          </div>
+          <div style="font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-top:12px;margin-bottom:6px">
+            Permissions</div>
+          <div class="permission-grid">
+            <label class="perm-item"><input type="checkbox" checked> <label>Allow printing</label></label>
+            <label class="perm-item"><input type="checkbox"> <label>Allow editing</label></label>
+            <label class="perm-item"><input type="checkbox" checked> <label>Allow copying</label></label>
+            <label class="perm-item"><input type="checkbox"> <label>Allow forms</label></label>
+            <label class="perm-item"><input type="checkbox" checked> <label>Allow comments</label></label>
+            <label class="perm-item"><input type="checkbox"> <label>Allow signatures</label></label>
+          </div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'password-protect')"><span class="btn-text">🔒 Protect
+            PDF</span></button>
+        <div class="progress-wrap" id="pw-pp">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-pp"></div>
+          </div>
+          <div class="progress-label" id="pl-pp">Encrypting…</div>
+        </div>
+      </div>
+
+      <!-- Unlock PDF -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon red">🔓</div>
+          <div>
+            <div class="card-title">Unlock PDF</div>
+            <div class="card-desc">Remove password protection from PDFs you own</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'ul')">
+          <div class="drop-icon">🔓</div>
+          <div class="drop-text"><strong>Drop protected PDF</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-ul"></div>
+        <div style="position:relative;z-index:1;margin-top:10px;">
+          <div style="font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:4px">Current password
+          </div>
+          <div class="pass-input-wrap">
+            <input class="pass-input" type="password" id="unlock-pass" placeholder="Enter current password…">
+            <button class="pass-toggle" onclick="togglePass('unlock-pass',this)">👁</button>
+          </div>
+          <div
+            style="margin-top:10px;padding:10px 14px;background:var(--blush);border-radius:10px;font-size:0.8rem;color:var(--slate-dark);line-height:1.5">
+            ⚠ Only remove passwords from PDFs you legally own or have permission to modify.
+          </div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'unlock-pdf')"><span class="btn-text">🔓 Unlock
+            PDF</span></button>
+        <div class="progress-wrap" id="pw-ul">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-ul"></div>
+          </div>
+          <div class="progress-label" id="pl-ul">Removing password…</div>
+        </div>
+      </div>
+
+      <!-- Redact -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon pink">⬛</div>
+          <div>
+            <div class="card-title">Redact PDF</div>
+            <div class="card-desc">Permanently black out sensitive text and images</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'red')">
+          <div class="drop-icon">⬛</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-red"></div>
+        <div class="page-range-wrap">
+          <input class="page-range-input" type="text" placeholder="Search text to redact (e.g. SSN, email, phone)">
+          <div class="page-range-hint">All matching text will be <strong>permanently removed</strong> and cannot be
+            recovered.</div>
+        </div>
+        <div class="convert-opts">
+          <div class="opt-chip selected" onclick="selectOpt(this)">Black box</div>
+          <div class="opt-chip" onclick="selectOpt(this)">White out</div>
+          <div class="opt-chip" onclick="selectOpt(this)">Blurred</div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'redact-pdf')"><span class="btn-text">⬛ Apply
+            Redaction</span></button>
+        <div class="progress-wrap" id="pw-red">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-red"></div>
+          </div>
+          <div class="progress-label" id="pl-red">Redacting…</div>
+        </div>
+      </div>
+
+      <!-- e-Sign -->
+      <div class="tool-card">
+        <div class="card-header">
+          <div class="card-icon purple">✍️</div>
+          <div>
+            <div class="card-title">Sign PDF</div>
+            <div class="card-desc">Draw, type, or upload your signature and place it</div>
+          </div>
+        </div>
+        <div class="drop-zone"><input type="file" accept=".pdf" onchange="handleFiles(this,'sig')">
+          <div class="drop-icon">✍️</div>
+          <div class="drop-text"><strong>Drop PDF here</strong> or click to browse</div>
+        </div>
+        <div class="file-list" id="fl-sig"></div>
+        <div style="position:relative;z-index:1;margin-top:10px;">
+          <div style="font-size:0.82rem;font-weight:600;color:var(--text-muted);margin-bottom:8px">Signature type</div>
+          <div class="quality-chips">
+            <div class="quality-chip selected" onclick="selectQuality(this)">✏ Draw</div>
+            <div class="quality-chip" onclick="selectQuality(this)">T Type</div>
+            <div class="quality-chip" onclick="selectQuality(this)">📷 Upload image</div>
+          </div>
+          <canvas id="sig-canvas" width="400" height="120"
+            style="display:block;margin-top:12px;width:100%;height:90px;background:white;border:1.5px solid rgba(135,133,162,0.25);border-radius:10px;cursor:crosshair;touch-action:none"></canvas>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="org-btn" onclick="clearCanvas()">↺ Clear</button>
+            <button class="org-btn" onclick="setSignColor('#2a2a35')">⚫ Black</button>
+            <button class="org-btn" onclick="setSignColor('#8785A2')">🟣 Purple</button>
+            <button class="org-btn" onclick="setSignColor('#1a5cb0')">🔵 Blue</button>
+          </div>
+        </div>
+        <button class="btn" onclick="simulateConvert(this,'sign-pdf')"><span class="btn-text">✍ Place
+            Signature</span></button>
+        <div class="progress-wrap" id="pw-sig">
+          <div class="progress-bar-bg">
+            <div class="progress-bar" id="pb-sig"></div>
+          </div>
+          <div class="progress-label" id="pl-sig">Embedding signature…</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ─── DOWNLOAD MODAL ─── -->
+  <div class="modal-overlay" id="dl-modal" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-icon">🎉</div>
+      <h3>File Ready!</h3>
+      <p>Your PDF has been processed successfully.</p>
+      <div class="modal-file-info">
+        <div class="modal-file-icon">📄</div>
+        <div>
+          <div class="modal-file-name" id="modal-fname">output.pdf</div>
+          <div class="modal-file-size" id="modal-fsize">2.4 MB → 1.1 MB</div>
+          <div class="modal-saving" id="modal-saving">54% smaller</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn-dl" onclick="triggerDownload()">⬇ Download File</button>
+        <button class="modal-btn-close" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── KEYBOARD SHORTCUTS ─── -->
+  <div class="shortcut-overlay" id="shortcut-overlay" onclick="closeShortcuts()">
+    <div class="shortcut-modal" onclick="event.stopPropagation()">
+      <h3>⌨ Keyboard Shortcuts</h3>
+      <div class="shortcut-row"><span>Convert tools</span><span><span class="kbd">1</span></span></div>
+      <div class="shortcut-row"><span>Merge PDF</span><span><span class="kbd">2</span></span></div>
+      <div class="shortcut-row"><span>Compress PDF</span><span><span class="kbd">3</span></span></div>
+      <div class="shortcut-row"><span>Split PDF</span><span><span class="kbd">4</span></span></div>
+      <div class="shortcut-row"><span>Edit PDF</span><span><span class="kbd">5</span></span></div>
+      <div class="shortcut-row"><span>Secure PDF</span><span><span class="kbd">6</span></span></div>
+      <div class="shortcut-row"><span>Show shortcuts</span><span><span class="kbd">?</span></span></div>
+      <div class="shortcut-row"><span>Close overlay</span><span><span class="kbd">Esc</span></span></div>
+      <div style="margin-top:18px;text-align:center">
+        <button onclick="closeShortcuts()"
+          style="padding:9px 24px;background:var(--slate);color:white;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.85rem">Got
+          it</button>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav">
+    <button class="mobile-tab active" onclick="switchTab('convert', this, true)"><span
+        class="m-icon">⟳</span>Convert</button>
+    <button class="mobile-tab" onclick="switchTab('merge', this, true)"><span class="m-icon">⊕</span>Merge</button>
+    <button class="mobile-tab" onclick="switchTab('compress', this, true)"><span
+        class="m-icon">⊘</span>Compress</button>
+    <button class="mobile-tab" onclick="switchTab('split', this, true)"><span class="m-icon">✂</span>Split</button>
+    <button class="mobile-tab" onclick="switchTab('edit', this, true)"><span class="m-icon">✦</span>Edit</button>
+    <button class="mobile-tab" onclick="switchTab('secure', this, true)"><span class="m-icon">🔒</span>Secure</button>
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-name">
+            <div class="brand-logo">📄</div>
+            PDF Studio
+          </div>
+          <p>A complete suite of browser-based PDF tools. No uploads to servers. No data collected. Everything processes
+            locally in your browser.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Convert</h4>
+          <a href="#" onclick="switchTabHref('convert');return false">Word to PDF</a>
+          <a href="#" onclick="switchTabHref('convert');return false">Excel to PDF</a>
+          <a href="#" onclick="switchTabHref('convert');return false">Image to PDF</a>
+          <a href="#" onclick="switchTabHref('convert');return false">HTML to PDF</a>
+          <a href="#" onclick="switchTabHref('convert');return false">PDF to Word</a>
+          <a href="#" onclick="switchTabHref('convert');return false">PDF to Images</a>
+        </div>
+        <div class="footer-col">
+          <h4>Organize</h4>
+          <a href="#" onclick="switchTabHref('merge');return false">Merge PDF</a>
+          <a href="#" onclick="switchTabHref('split');return false">Split PDF</a>
+          <a href="#" onclick="switchTabHref('split');return false">Extract Pages</a>
+          <a href="#" onclick="switchTabHref('split');return false">Remove Pages</a>
+          <a href="#" onclick="switchTabHref('edit');return false">Reorder Pages</a>
+        </div>
+        <div class="footer-col">
+          <h4>Edit</h4>
+          <a href="#" onclick="switchTabHref('compress');return false">Compress PDF</a>
+          <a href="#" onclick="switchTabHref('edit');return false">Rotate Pages</a>
+          <a href="#" onclick="switchTabHref('edit');return false">Add Watermark</a>
+          <a href="#" onclick="switchTabHref('edit');return false">PDF/A Convert</a>
+        </div>
+        <div class="footer-col">
+          <h4>Secure</h4>
+          <a href="#" onclick="switchTabHref('secure');return false">Protect PDF</a>
+          <a href="#" onclick="switchTabHref('secure');return false">Unlock PDF</a>
+          <a href="#" onclick="switchTabHref('secure');return false">Sign PDF</a>
+          <a href="#" onclick="switchTabHref('secure');return false">Redact PDF</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 PDF Studio — All processing happens 100% in your browser</p>
+        <div class="footer-badges">
+          <span class="footer-badge">🔒 No server uploads</span>
+          <span class="footer-badge">🌐 100% local</span>
+          <span class="footer-badge">✨ Always free</span>
+          <button onclick="openShortcuts()"
+            style="display:inline-flex;align-items:center;gap:5px;background:var(--snow);border:1px solid rgba(135,133,162,0.2);border-radius:20px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all 0.18s"
+            onmouseover="this.style.borderColor='var(--slate)'"
+            onmouseout="this.style.borderColor='rgba(135,133,162,0.2)'">⌨ Shortcuts</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- docx-preview for high-fidelity DOCX rendering -->
+  <script src="https://unpkg.com/docx-preview@0.3.3/dist/docx-preview.min.js"></script>
+
+  <script src="pdf-tools.js"></script>
+
+</body>
+
+</html>
