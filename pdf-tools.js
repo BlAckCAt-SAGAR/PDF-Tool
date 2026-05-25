@@ -191,7 +191,7 @@ function triggerDownload() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
   closeModal();
   showToast('✅ Download started!', 'success');
 }
@@ -582,6 +582,7 @@ async function wordToPdf(btn, files) {
     const containerPx = 794;
 
     let renderMethod = 'none';
+
     for (let fi = 0; fi < files.length; fi++) {
       if (fi > 0) doc.addPage();
       updateProgress(btn, 5 + (fi / files.length) * 80, `Converting ${files[fi].name}…`);
@@ -593,13 +594,16 @@ async function wordToPdf(btn, files) {
       // Try docx-preview first (best fidelity), fall back to mammoth
       // ──────────────────────────────────────────────────────────
       const container = document.createElement('div');
-      container.className = 'pdf-render-container';
+      container.className = 'pdf-offscreen-render';
       container.style.cssText = `
-        position: absolute; left: 0; top: 0; z-index: -9999;
+        position: absolute; left: 0; top: 0;
         width: ${containerPx}px; background: white;
-        overflow: hidden; pointer-events: none;
+        opacity: 0; pointer-events: none; z-index: -1;
+        overflow: visible;
       `;
       document.body.appendChild(container);
+
+      renderMethod = 'none';
 
       // Attempt 1: docx-preview (high fidelity — tables, images, styles, fonts)
       if (typeof docx !== 'undefined' && typeof docx.renderAsync === 'function') {
@@ -673,62 +677,62 @@ async function wordToPdf(btn, files) {
         }
 
         /* Mammoth output styling */
-        .pdf-render-container {
+        .pdf-offscreen-render {
           font-family: 'Calibri', 'Segoe UI', Arial, Helvetica, sans-serif !important;
           font-size: 11pt !important;
           line-height: 1.5 !important;
           color: #1a1a1a !important;
           padding: 40px !important;
         }
-        .pdf-render-container h1 {
+        .pdf-offscreen-render h1 {
           font-size: 20pt !important; font-weight: 700 !important;
           color: #1a1a2e !important; margin: 18px 0 10px !important;
           border-bottom: 2px solid #e0e0e8 !important; padding-bottom: 6px !important;
         }
-        .pdf-render-container h2 {
+        .pdf-offscreen-render h2 {
           font-size: 16pt !important; font-weight: 600 !important;
           color: #2a2a45 !important; margin: 16px 0 8px !important;
         }
-        .pdf-render-container h3 {
+        .pdf-offscreen-render h3 {
           font-size: 13pt !important; font-weight: 600 !important;
           color: #3a3a55 !important; margin: 14px 0 6px !important;
         }
-        .pdf-render-container p {
+        .pdf-offscreen-render p {
           margin: 0 0 8px !important; text-align: justify !important;
         }
-        .pdf-render-container table {
+        .pdf-offscreen-render table {
           border-collapse: collapse !important; width: 100% !important;
           margin: 12px 0 !important; page-break-inside: avoid !important;
         }
-        .pdf-render-container th,
-        .pdf-render-container td {
+        .pdf-offscreen-render th,
+        .pdf-offscreen-render td {
           border: 1px solid #bbb !important; padding: 6px 10px !important;
           font-size: 10pt !important; vertical-align: top !important;
         }
-        .pdf-render-container th {
+        .pdf-offscreen-render th {
           background: #e8e8f0 !important; font-weight: 600 !important;
           color: #2a2a3a !important;
         }
-        .pdf-render-container tr:nth-child(even) td {
+        .pdf-offscreen-render tr:nth-child(even) td {
           background: #f8f8fc !important;
         }
-        .pdf-render-container img {
+        .pdf-offscreen-render img {
           max-width: 100% !important; height: auto !important;
           margin: 8px 0 !important;
         }
-        .pdf-render-container ul, .pdf-render-container ol {
+        .pdf-offscreen-render ul, .pdf-offscreen-render ol {
           margin: 6px 0 !important; padding-left: 28px !important;
         }
-        .pdf-render-container li {
+        .pdf-offscreen-render li {
           margin-bottom: 4px !important;
         }
-        .pdf-render-container strong, .pdf-render-container b {
+        .pdf-offscreen-render strong, .pdf-offscreen-render b {
           font-weight: 700 !important;
         }
-        .pdf-render-container em, .pdf-render-container i {
+        .pdf-offscreen-render em, .pdf-offscreen-render i {
           font-style: italic !important;
         }
-        .pdf-render-container a {
+        .pdf-offscreen-render a {
           color: #2b5ea7 !important; text-decoration: underline !important;
         }
       `;
@@ -748,8 +752,12 @@ async function wordToPdf(btn, files) {
 
       // ──────────────────────────────────────────────────────────
       // CAPTURE → CANVAS with html2canvas
+      // Force opacity to 1 right before capture so html2canvas sees content
       // ──────────────────────────────────────────────────────────
       updateProgress(btn, 30 + (fi / files.length) * 30, `Capturing rendered content…`);
+
+      // Briefly make visible for html2canvas (it needs painted pixels)
+      container.style.opacity = '1';
 
       const canvas = await html2canvas(container, {
         scale: 2,
@@ -759,10 +767,16 @@ async function wordToPdf(btn, files) {
         logging: false,
         width: containerPx,
         windowWidth: containerPx + 100,
+        scrollX: 0,
+        scrollY: 0,
+        x: 0,
+        y: 0,
         imageTimeout: 15000
       });
 
       document.body.removeChild(container);
+
+      console.log('[wordToPdf] Canvas captured:', canvas.width, 'x', canvas.height);
 
       // ──────────────────────────────────────────────────────────
       // SPLIT CANVAS INTO PAGES (clean page breaks)
