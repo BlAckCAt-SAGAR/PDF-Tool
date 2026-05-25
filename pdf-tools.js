@@ -616,6 +616,40 @@ async function wordToPdf(btn, files) {
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = result.value;
 
+      // ── Helper: render any <img> tags found inside a node ──
+      function renderImages(parentNode) {
+        const imgEls = parentNode.querySelectorAll ? parentNode.querySelectorAll('img') : [];
+        for (let im = 0; im < imgEls.length; im++) {
+          const src = imgEls[im].getAttribute('src');
+          if (!src || !src.startsWith('data:image')) continue;
+          try {
+            checkPage(60);
+            const imgType = src.includes('image/png') ? 'PNG' : 'JPEG';
+            // Get natural dimensions from the data URI via a temp Image
+            let imgW = maxW;
+            let imgH = imgW * 0.6; // default fallback aspect ratio
+            // Try to get real dimensions from attributes
+            const natW = parseInt(imgEls[im].getAttribute('width')) || parseInt(imgEls[im].style.width) || 0;
+            const natH = parseInt(imgEls[im].getAttribute('height')) || parseInt(imgEls[im].style.height) || 0;
+            if (natW > 0 && natH > 0) {
+              const aspect = natH / natW;
+              imgW = Math.min(maxW, 170);
+              imgH = imgW * aspect;
+              // Cap height to avoid going off page
+              if (imgH > pageH - marginT - marginB - 10) {
+                imgH = pageH - marginT - marginB - 10;
+                imgW = imgH / aspect;
+              }
+            }
+            checkPage(imgH + 4);
+            doc.addImage(src, imgType, marginL, y, imgW, imgH);
+            y += imgH + 4;
+          } catch (e) {
+            console.warn('Could not embed image:', e);
+          }
+        }
+      }
+
       // ── Walk DOM and render directly to jsPDF ──
       const children = tempDiv.childNodes;
       for (let ci = 0; ci < children.length; ci++) {
@@ -683,10 +717,16 @@ async function wordToPdf(btn, files) {
           lines.forEach(line => { checkPage(6); doc.text(line, marginL, y); y += 6; });
           y += 2;
 
-        // ── Paragraphs ──
+        // ── Paragraphs (may contain images!) ──
         } else if (tag === 'p') {
+          // First, render any images inside this paragraph
+          const hasImages = node.querySelector('img');
+          if (hasImages) {
+            renderImages(node);
+          }
+          // Then render any text content
           const text = node.textContent.trim();
-          if (!text) { y += 3; continue; }
+          if (!text) { if (!hasImages) y += 3; continue; }
           doc.setFontSize(11);
           doc.setTextColor(30, 30, 40);
 
@@ -712,17 +752,21 @@ async function wordToPdf(btn, files) {
           let idx = 0;
           items.forEach(li => {
             idx++;
+            // Check for images inside list items
+            renderImages(li);
             doc.setFontSize(11);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(30, 30, 40);
             const bullet = tag === 'ol' ? `${idx}. ` : '•  ';
             const itemText = li.textContent.trim();
-            const lines = doc.splitTextToSize(bullet + itemText, maxW - 8);
-            lines.forEach((line, li2) => {
-              checkPage(6);
-              doc.text(line, marginL + (li2 === 0 ? 0 : 6), y);
-              y += 5.5;
-            });
+            if (itemText) {
+              const lines = doc.splitTextToSize(bullet + itemText, maxW - 8);
+              lines.forEach((line, li2) => {
+                checkPage(6);
+                doc.text(line, marginL + (li2 === 0 ? 0 : 6), y);
+                y += 5.5;
+              });
+            }
           });
           y += 2;
 
@@ -774,21 +818,27 @@ async function wordToPdf(btn, files) {
           }
           y += 3;
 
-        // ── Images ──
+        // ── Standalone Images ──
         } else if (tag === 'img') {
-          const src = node.getAttribute('src');
-          if (src && src.startsWith('data:image')) {
-            try {
-              checkPage(60);
-              const imgType = src.includes('image/png') ? 'PNG' : 'JPEG';
-              // Scale image to fit page width, max 120mm tall
-              const imgW = Math.min(maxW, 160);
-              const imgH = Math.min(100, imgW * 0.75); // approximate aspect ratio
-              doc.addImage(src, imgType, marginL, y, imgW, imgH);
-              y += imgH + 4;
-            } catch (e) {
-              console.warn('Could not embed image:', e);
-            }
+          renderImages(node.parentNode || node);
+
+        // ── Divs / Sections (may contain images or other elements) ──
+        } else if (tag === 'div' || tag === 'section' || tag === 'article' || tag === 'figure') {
+          // Check for images first
+          renderImages(node);
+          // Then render text
+          const text = node.textContent.trim();
+          if (text) {
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(30, 30, 40);
+            const lines = doc.splitTextToSize(text, maxW);
+            lines.forEach(line => {
+              checkPage(6);
+              doc.text(line, marginL, y);
+              y += 5.5;
+            });
+            y += 2;
           }
 
         // ── Blockquotes ──
@@ -819,8 +869,9 @@ async function wordToPdf(btn, files) {
           doc.line(marginL, y, marginL + maxW, y);
           y += 5;
 
-        // ── Any other element: extract text ──
+        // ── Any other element: check for images then text ──
         } else {
+          renderImages(node);
           const text = node.textContent.trim();
           if (text) {
             doc.setFontSize(11);
