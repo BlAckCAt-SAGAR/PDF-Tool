@@ -593,10 +593,11 @@ async function wordToPdf(btn, files) {
       // Try docx-preview first (best fidelity), fall back to mammoth
       // ──────────────────────────────────────────────────────────
       const container = document.createElement('div');
+      container.className = 'pdf-render-container';
       container.style.cssText = `
-        position: fixed; left: -9999px; top: 0; z-index: -9999;
+        position: absolute; left: 0; top: 0; z-index: -9999;
         width: ${containerPx}px; background: white;
-        overflow: hidden;
+        overflow: hidden; pointer-events: none;
       `;
       document.body.appendChild(container);
 
@@ -672,62 +673,62 @@ async function wordToPdf(btn, files) {
         }
 
         /* Mammoth output styling */
-        div[style*="left:-9999px"] {
+        .pdf-render-container {
           font-family: 'Calibri', 'Segoe UI', Arial, Helvetica, sans-serif !important;
           font-size: 11pt !important;
           line-height: 1.5 !important;
           color: #1a1a1a !important;
           padding: 40px !important;
         }
-        div[style*="left:-9999px"] h1 {
+        .pdf-render-container h1 {
           font-size: 20pt !important; font-weight: 700 !important;
           color: #1a1a2e !important; margin: 18px 0 10px !important;
           border-bottom: 2px solid #e0e0e8 !important; padding-bottom: 6px !important;
         }
-        div[style*="left:-9999px"] h2 {
+        .pdf-render-container h2 {
           font-size: 16pt !important; font-weight: 600 !important;
           color: #2a2a45 !important; margin: 16px 0 8px !important;
         }
-        div[style*="left:-9999px"] h3 {
+        .pdf-render-container h3 {
           font-size: 13pt !important; font-weight: 600 !important;
           color: #3a3a55 !important; margin: 14px 0 6px !important;
         }
-        div[style*="left:-9999px"] p {
+        .pdf-render-container p {
           margin: 0 0 8px !important; text-align: justify !important;
         }
-        div[style*="left:-9999px"] table {
+        .pdf-render-container table {
           border-collapse: collapse !important; width: 100% !important;
           margin: 12px 0 !important; page-break-inside: avoid !important;
         }
-        div[style*="left:-9999px"] th,
-        div[style*="left:-9999px"] td {
+        .pdf-render-container th,
+        .pdf-render-container td {
           border: 1px solid #bbb !important; padding: 6px 10px !important;
           font-size: 10pt !important; vertical-align: top !important;
         }
-        div[style*="left:-9999px"] th {
+        .pdf-render-container th {
           background: #e8e8f0 !important; font-weight: 600 !important;
           color: #2a2a3a !important;
         }
-        div[style*="left:-9999px"] tr:nth-child(even) td {
+        .pdf-render-container tr:nth-child(even) td {
           background: #f8f8fc !important;
         }
-        div[style*="left:-9999px"] img {
+        .pdf-render-container img {
           max-width: 100% !important; height: auto !important;
           margin: 8px 0 !important;
         }
-        div[style*="left:-9999px"] ul, div[style*="left:-9999px"] ol {
+        .pdf-render-container ul, .pdf-render-container ol {
           margin: 6px 0 !important; padding-left: 28px !important;
         }
-        div[style*="left:-9999px"] li {
+        .pdf-render-container li {
           margin-bottom: 4px !important;
         }
-        div[style*="left:-9999px"] strong, div[style*="left:-9999px"] b {
+        .pdf-render-container strong, .pdf-render-container b {
           font-weight: 700 !important;
         }
-        div[style*="left:-9999px"] em, div[style*="left:-9999px"] i {
+        .pdf-render-container em, .pdf-render-container i {
           font-style: italic !important;
         }
-        div[style*="left:-9999px"] a {
+        .pdf-render-container a {
           color: #2b5ea7 !important; text-decoration: underline !important;
         }
       `;
